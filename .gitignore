@@ -1,3 +1,9 @@
+# project build targets
+display
+jmatch
+matchdemo
+search
+
 # Prerequisites
 *.d
 
