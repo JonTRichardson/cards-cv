@@ -1,0 +1,185 @@
+
+pi@raspberrypi:~/proj/opencv/jonr_cards $ tail -22 Makefile 
+# instructions for running:
+
+# make
+
+# set this variable to where the *.so files are:
+# LD_LIBRARY_PATH=/home/pi/proj/opencv/opencv-3.4.1/build/lib ; export LD_LIBRARY_PATH
+
+# run a specific file, for example:
+# ./search data/nicubunu-Ornamental-deck-Queen-of-diamonds-300px.png 
+
+# To run all of a rank:
+# for i in data/nicubunu-Ornamental-deck-Queen-of-*-300px.png ; do echo $i ; ./search $i ; done
+
+# To run all the cards of a particular suit:
+# for i in data/nicubunu-Ornamental-deck-*-of-clubs-300px.png ; do echo $i ; ./search $i ; done
+
+# To run all of them:
+# for i in data/nicubunu-Ornamental-deck-*-300px.png ; do echo $i ; ./search $i ; done
+
+# To display a specific file, along with the result image and best match area:
+# ./matchdemo data/nicubunu-Ornamental-deck-Queen-of-diamonds-300px.png templates/patt-jr-alt-nicu.png
+
+pi@raspberrypi:~/proj/opencv/jonr_cards $ 
+pi@raspberrypi:~/proj/opencv/jonr_cards $ LD_LIBRARY_PATH=/home/pi/proj/opencv/opencv-3.4.1/build/lib ; export LD_LIBRARY_PATH
+pi@raspberrypi:~/proj/opencv/jonr_cards $ 
+pi@raspberrypi:~/proj/opencv/jonr_cards $ 
+pi@raspberrypi:~/proj/opencv/jonr_cards $ 
+pi@raspberrypi:~/proj/opencv/jonr_cards $ ./search data/nicubunu-Ornamental-deck-Queen-of-diamonds-300px.png 
+CardInfo: Queen of Diamonds 
+pi@raspberrypi:~/proj/opencv/jonr_cards $ for i in data/nicubunu-Ornamental-deck-Queen-of-*-300px.png ; do echo $i ; ./search $i ; done
+data/nicubunu-Ornamental-deck-Queen-of-clubs-300px.png
+CardInfo: Queen of Clubs 
+data/nicubunu-Ornamental-deck-Queen-of-diamonds-300px.png
+CardInfo: Queen of Diamonds 
+data/nicubunu-Ornamental-deck-Queen-of-hearts-300px.png
+CardInfo: Queen of Hearts 
+data/nicubunu-Ornamental-deck-Queen-of-spades-300px.png
+CardInfo: Queen of Spades 
+pi@raspberrypi:~/proj/opencv/jonr_cards $ 
+pi@raspberrypi:~/proj/opencv/jonr_cards $ 
+pi@raspberrypi:~/proj/opencv/jonr_cards $ 
+pi@raspberrypi:~/proj/opencv/jonr_cards $ for i in data/nicubunu-Ornamental-deck-*-of-clubs-300px.png ; do echo $i ; ./search $i ; done
+data/nicubunu-Ornamental-deck-10-of-clubs-300px.png
+CardInfo: Ten of Clubs 
+data/nicubunu-Ornamental-deck-2-of-clubs-300px.png
+CardInfo: Nonface of Clubs 
+data/nicubunu-Ornamental-deck-3-of-clubs-300px.png
+CardInfo: Nonface of Clubs 
+data/nicubunu-Ornamental-deck-4-of-clubs-300px.png
+CardInfo: Four of Clubs 
+data/nicubunu-Ornamental-deck-5-of-clubs-300px.png
+CardInfo: Nonface of Clubs 
+data/nicubunu-Ornamental-deck-6-of-clubs-300px.png
+CardInfo: Six of Clubs 
+data/nicubunu-Ornamental-deck-7-of-clubs-300px.png
+CardInfo: Nonface of Clubs 
+data/nicubunu-Ornamental-deck-8-of-clubs-300px.png
+CardInfo: Nonface of Clubs 
+data/nicubunu-Ornamental-deck-9-of-clubs-300px.png
+CardInfo: Nine of Clubs 
+data/nicubunu-Ornamental-deck-Ace-of-clubs-300px.png
+CardInfo: Ace of Clubs 
+data/nicubunu-Ornamental-deck-Jack-of-clubs-300px.png
+CardInfo: Jack of Clubs 
+data/nicubunu-Ornamental-deck-King-of-clubs-300px.png
+CardInfo: King of Clubs 
+data/nicubunu-Ornamental-deck-Queen-of-clubs-300px.png
+CardInfo: Queen of Clubs 
+pi@raspberrypi:~/proj/opencv/jonr_cards $ 
+pi@raspberrypi:~/proj/opencv/jonr_cards $ 
+pi@raspberrypi:~/proj/opencv/jonr_cards $ 
+pi@raspberrypi:~/proj/opencv/jonr_cards $ 
+pi@raspberrypi:~/proj/opencv/jonr_cards $ 
+pi@raspberrypi:~/proj/opencv/jonr_cards $ for i in data/nicubunu-Ornamental-deck-*300px.png ; do echo $i ; ./search $i ; done
+data/nicubunu-Ornamental-deck-10-of-clubs-300px.png
+CardInfo: Ten of Clubs 
+data/nicubunu-Ornamental-deck-10-of-diamonds-300px.png
+CardInfo: Nonface of Diamonds 
+data/nicubunu-Ornamental-deck-10-of-hearts-300px.png
+CardInfo: Nonface of Hearts 
+data/nicubunu-Ornamental-deck-10-of-spades-300px.png
+CardInfo: Ten of Spades 
+data/nicubunu-Ornamental-deck-2-of-clubs-300px.png
+CardInfo: Nonface of Clubs 
+data/nicubunu-Ornamental-deck-2-of-diamonds-300px.png
+CardInfo: Two of Diamonds 
+data/nicubunu-Ornamental-deck-2-of-hearts-300px.png
+CardInfo: Two of Hearts 
+data/nicubunu-Ornamental-deck-2-of-spades-300px.png
+CardInfo: Nonface of Spades 
+data/nicubunu-Ornamental-deck-3-of-clubs-300px.png
+CardInfo: Nonface of Clubs 
+data/nicubunu-Ornamental-deck-3-of-diamonds-300px.png
+CardInfo: Nonface of Diamonds 
+data/nicubunu-Ornamental-deck-3-of-hearts-1-300px.png
+CardInfo: Nonface of Hearts 
+data/nicubunu-Ornamental-deck-3-of-spades-300px.png
+CardInfo: Nonface of Spades 
+data/nicubunu-Ornamental-deck-4-of-clubs-300px.png
+CardInfo: Four of Clubs 
+data/nicubunu-Ornamental-deck-4-of-diamonds-300px.png
+CardInfo: Four of Diamonds 
+data/nicubunu-Ornamental-deck-4-of-hearts-300px.png
+CardInfo: Four of Hearts 
+data/nicubunu-Ornamental-deck-4-of-spades-300px.png
+CardInfo: Four of Spades 
+data/nicubunu-Ornamental-deck-5-of-clubs-300px.png
+CardInfo: Nonface of Clubs 
+data/nicubunu-Ornamental-deck-5-of-diamonds-300px.png
+CardInfo: Nonface of Diamonds 
+data/nicubunu-Ornamental-deck-5-of-hearts-300px.png
+CardInfo: Nonface of Hearts 
+data/nicubunu-Ornamental-deck-5-of-spades-300px.png
+CardInfo: Nonface of Spades 
+data/nicubunu-Ornamental-deck-6-of-clubs-300px.png
+CardInfo: Six of Clubs 
+data/nicubunu-Ornamental-deck-6-of-diamonds-300px.png
+CardInfo: Nonface of Diamonds 
+data/nicubunu-Ornamental-deck-6-of-hearts-300px.png
+CardInfo: Nonface of Hearts 
+data/nicubunu-Ornamental-deck-6-of-spades-300px.png
+CardInfo: Six of Spades 
+data/nicubunu-Ornamental-deck-7-of-clubs-300px.png
+CardInfo: Nonface of Clubs 
+data/nicubunu-Ornamental-deck-7-of-diamonds-300px.png
+CardInfo: Nonface of Diamonds 
+data/nicubunu-Ornamental-deck-7-of-hearts-300px.png
+CardInfo: Nonface of Hearts 
+data/nicubunu-Ornamental-deck-7-of-spades-300px.png
+CardInfo: Nonface of Spades 
+data/nicubunu-Ornamental-deck-8-of-clubs-300px.png
+CardInfo: Nonface of Clubs 
+data/nicubunu-Ornamental-deck-8-of-diamonds-300px.png
+CardInfo: Nonface of Diamonds 
+data/nicubunu-Ornamental-deck-8-of-hearts-300px.png
+CardInfo: Nonface of Hearts 
+data/nicubunu-Ornamental-deck-8-of-spades-300px.png
+CardInfo: Nonface of Spades 
+data/nicubunu-Ornamental-deck-9-of-clubs-300px.png
+CardInfo: Nine of Clubs 
+data/nicubunu-Ornamental-deck-9-of-diamonds-300px.png
+CardInfo: Nonface of Diamonds 
+data/nicubunu-Ornamental-deck-9-of-hearts-300px.png
+CardInfo: Nonface of Hearts 
+data/nicubunu-Ornamental-deck-9-of-spades-300px.png
+CardInfo: Nine of Spades 
+data/nicubunu-Ornamental-deck-Ace-of-clubs-300px.png
+CardInfo: Ace of Clubs 
+data/nicubunu-Ornamental-deck-Ace-of-diamonds-300px.png
+CardInfo: Nonface of Diamonds 
+data/nicubunu-Ornamental-deck-Ace-of-hearts-300px.png
+CardInfo: Nonface of Hearts 
+data/nicubunu-Ornamental-deck-Ace-of-spades-300px.png
+CardInfo: Ace of Spades 
+data/nicubunu-Ornamental-deck-Black-Joker-300px.png
+CardInfo: Nonface of Unknown suit. 
+Card not detected
+data/nicubunu-Ornamental-deck-Jack-of-clubs-300px.png
+CardInfo: Jack of Clubs 
+data/nicubunu-Ornamental-deck-Jack-of-diamonds-300px.png
+CardInfo: Jack of Diamonds 
+data/nicubunu-Ornamental-deck-Jack-of-hearts-300px.png
+CardInfo: Jack of Hearts 
+data/nicubunu-Ornamental-deck-Jack-of-spades-300px.png
+CardInfo: Jack of Spades 
+data/nicubunu-Ornamental-deck-King-of-clubs-300px.png
+CardInfo: King of Clubs 
+data/nicubunu-Ornamental-deck-King-of-diamonds-300px.png
+CardInfo: King of Diamonds 
+data/nicubunu-Ornamental-deck-King-of-hearts-300px.png
+CardInfo: King of Hearts 
+data/nicubunu-Ornamental-deck-King-of-spades-300px.png
+CardInfo: King of Spades 
+data/nicubunu-Ornamental-deck-Queen-of-clubs-300px.png
+CardInfo: Queen of Clubs 
+data/nicubunu-Ornamental-deck-Queen-of-diamonds-300px.png
+CardInfo: Queen of Diamonds 
+data/nicubunu-Ornamental-deck-Queen-of-hearts-300px.png
+CardInfo: Queen of Hearts 
+data/nicubunu-Ornamental-deck-Queen-of-spades-300px.png
+CardInfo: Queen of Spades 
+pi@raspberrypi:~/proj/opencv/jonr_cards $ 
+

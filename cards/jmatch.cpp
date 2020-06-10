@@ -1,7 +1,8 @@
-// jrmatch.cpp.  Version 0 of this file was copied from   
+// jmatch.cpp.  Version 0 of this file was copied from   
 //         https://docs.opencv.org/2.4/doc/tutorials/imgproc/histograms/template_matching/template_matching.html
+//         Ver 1.2 : experiments with grayscale. 
 //////////////////////////////////////
-#define JR_MATCH_CPP_VERSION   "ver 1"
+#define JR_MATCH_CPP_VERSION   "ver 1.2wip"
 
 // TODO : Reenable these warnings and fix the code.
 #pragma GCC diagnostic ignored "-Wwrite-strings"
@@ -43,9 +44,14 @@ int main( int argc, char** argv )
   cout << "Image file (argv[1]) : " << argv[1] << endl; 
   cout << "Pattern file (argv[2]) : " << argv[2] << endl; 
 
+  //cout << "CV_LOAD_IMAGE_COLOR=" << CV_LOAD_IMAGE_COLOR << endl;
+  //cout << "CV_LOAD_IMAGE_GRAYSCALE=" << CV_LOAD_IMAGE_GRAYSCALE << endl;
+
   /// Load image and template
-  img = imread( argv[1], 1 );
-  templ = imread( argv[2], 1 );
+  //img = imread( argv[1], CV_LOAD_IMAGE_GRAYSCALE );
+  img = imread( argv[1], CV_LOAD_IMAGE_COLOR );
+  //templ = imread( argv[2], CV_LOAD_IMAGE_GRAYSCALE );
+  templ = imread( argv[2], CV_LOAD_IMAGE_COLOR );
 
   /// Create windows
   namedWindow( image_window, CV_WINDOW_AUTOSIZE );
@@ -53,7 +59,7 @@ int main( int argc, char** argv )
 
   /// Create Trackbar
   char* trackbar_label = "Method: \n 0: SQDIFF \n 1: SQDIFF NORMED \n 2: TM CCORR \n 3: TM CCORR NORMED \n 4: TM COEFF \n 5: TM COEFF NORMED";
-  createTrackbar( trackbar_label, image_window, &match_method, max_Trackbar, MatchingMethod );
+  //createTrackbar( trackbar_label, image_window, &match_method, max_Trackbar, MatchingMethod );
 
   MatchingMethod( 0, 0 );
 

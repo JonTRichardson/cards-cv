@@ -1,10 +1,13 @@
 // search.cpp.  
-//     Derived from jmatch, which matched a single pattern against an image.
-//         This program will do a comparison versus a list of patterns.
+//  Seeks to match a set of patterns against an image to identify suit, rank of a playing card.
 //         Version 2 will make a judgement from the list of patterns about the suit and face cards.
+//         Version 3 : final functional version.
+//         Version 3.5 : Cleanup.
+//         (bypass version 4)
+//         Version 5 : Add the n non-face patterns.
 //////////////////////////////////////
-
-#define JR_SEARCH_CPP_VERSION   "ver 2"
+ 
+#define JR_SEARCH_CPP_VERSION   "ver 5"
 
 // TODO : Reenable these warnings and fix the code.
 #pragma GCC diagnostic ignored "-Wwrite-strings"
@@ -14,21 +17,21 @@
 #include <iostream>
 #include <stdio.h>
 
-#include "jutils.hpp"
-
 using std::cout;
 using std::endl;
 using namespace cv;
 
-////////////////////////////////////////
-/// Global Variables (legacy)
-Mat img; Mat templ;
+/////////////////////////////////////////////////////////////
+/// Global Variables
+Mat img; Mat templ;   // legacy of original matchdemo.cpp
 
 const int match_method =CV_TM_SQDIFF; 
 
-////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////
 //
 //  patterns
+//    The following definitions are used to represent
+//    and detect cards.
 //
 
 enum Suit
@@ -76,6 +79,16 @@ void print_rank(Rank rank)
     switch (rank)
     {
         case NONFACE:    cout << "Nonface ";    break;
+        case TWO:        cout << "Two ";        break;
+        case THREE:      cout << "Three ";      break;
+        case FOUR:       cout << "Four ";       break;
+        case FIVE:       cout << "Five ";       break;
+        case SIX:        cout << "Six ";        break;
+        case SEVEN:      cout << "Seven ";      break;
+        case EIGHT:      cout << "Eight ";      break;
+        case NINE:       cout << "Nine ";       break;
+        case TEN:        cout << "Ten ";        break;
+        case ACE:        cout << "Ace ";        break;
         case JACK:       cout << "Jack ";       break;
         case QUEEN:      cout << "Queen ";      break;
         case KING:       cout << "King ";       break;
@@ -83,7 +96,9 @@ void print_rank(Rank rank)
     }
 }
 
-
+/////////////////////////////////////////////////////////
+// CardInfo
+// This is shared by both a candidate image and patterns.
 struct CardInfo
 {
     char * filename;
@@ -94,58 +109,76 @@ struct CardInfo
     void print_me() { cout << "CardInfo: "; print_rank(rank); cout << "of "; print_suit(suit); cout << endl; };
 };
 
+/////////////////////////////////////////////////////////
+//  array of patterns to match against images:
 CardInfo patterns[] =
 {
+    // these will find suit of all cards in the set:
     { "templates/patt-club-fr4-nicu.png",  UNKNOWN_RANK, 0.0, CLUBS,        0.0, },  
     { "templates/patt-diamond-nicub.png",  UNKNOWN_RANK, 0.0, DIAMONDS,     0.0, }, 
-    { "templates/patt-heart-fr4-nicu.png", UNKNOWN_RANK, 0.0, HEARTS,       0.0, },
+    { "templates/patt-heart-alt-nicu.png", UNKNOWN_RANK, 0.0, HEARTS,       0.0, },
     { "templates/patt-spade-nicu.png",     UNKNOWN_RANK, 0.0, SPADES,       0.0, },
+
+    // these 6 will find rank of the 12 face cards:
     { "templates/patt-jb-nicu.png",        JACK,         0.0, UNKNOWN_SUIT, 0.0, },
-    { "templates/patt-jr-nicu.png",        JACK,         0.0, UNKNOWN_SUIT, 0.0, }, 
-    { "templates/patt-qb-nicu.png",        QUEEN,        0.0, UNKNOWN_SUIT, 0.0, }
+    { "templates/patt-jr-alt-nicu.png",    JACK,         0.0, UNKNOWN_SUIT, 0.0, }, 
+    { "templates/patt-qb-nicu.png",        QUEEN,        0.0, UNKNOWN_SUIT, 0.0, },
+    { "templates/patt-qr-nicu.png",        QUEEN,        0.0, UNKNOWN_SUIT, 0.0, },
+    { "templates/patt-kb-nicu.png",        KING,         0.0, UNKNOWN_SUIT, 0.0, },
+    { "templates/patt-kr-nicu.png",        KING,         0.0, UNKNOWN_SUIT, 0.0, },
+
+    // these 7 will find rank of 14 of the nonface cards:
+    { "templates/patt-ab-nicu.png",        ACE,          0.0, UNKNOWN_SUIT, 0.0, },
+    { "templates/patt-2r-nicu.png",        TWO,          0.0, UNKNOWN_SUIT, 0.0, },
+    { "templates/patt-4b-nicu.png",        FOUR,         0.0, UNKNOWN_SUIT, 0.0, },
+    { "templates/patt-4r-nicu.png",        FOUR,         0.0, UNKNOWN_SUIT, 0.0, },
+    { "templates/patt-6b-nicu.png",        SIX,          0.0, UNKNOWN_SUIT, 0.0, },
+    { "templates/patt-9b-nicu.png",        NINE,         0.0, UNKNOWN_SUIT, 0.0, },
+    { "templates/patt-10b-nicu.png",       TEN,          0.0, UNKNOWN_SUIT, 0.0, }
 };
 
-
-/// Function Headers
+////////////////////////////////////////////////////////
+// Function Headers
 void MatchingMethod( const CardInfo& pattern, CardInfo&, int, void* );
+
 
 ///////////////////////////////////////////////
 //
 //  main()
+//    Argument: filename of card candidate. 
 //
 int main( int argc, char** argv )
 {
-    cout << JR_SEARCH_CPP_VERSION << endl;
     
-    if (argc!=2)
+    if (argc<2)
     {
 	    cout << "Incorrect args. argc="<<argc<<endl;
 	    exit(1);
     }
 
-    // Image:
-    cout << "Image file (argv[1]) : " << argv[1] << endl; 
+    // Image of card candidate:
     img = imread( argv[1], 1 );
 
     CardInfo card = { "", NONFACE, 1.0, UNKNOWN_SUIT, 1.0};
-    //card.print_me();
 
     int num_patterns = sizeof(patterns) / sizeof(patterns[0]);
-    cout << "num_paterns=" << num_patterns << endl;
   
     for (int ii=0; ii<num_patterns; ii++)
     {
         // Template:
-        cout << "file: " << patterns[ii].filename << endl; 
         templ = imread( patterns[ii].filename, 1 );
 
         MatchingMethod( patterns[ii], card, 0, 0 );
     }
 
     card.print_me();
+    if (card.rank == NONFACE && card.suit == UNKNOWN_SUIT)
+    {
+        cout << "Card not detected\n";
+    }
 
     return 0;
-} // main()
+}   // main()
 
 
 ///////////////////////////////////////////////////////////////////////////
@@ -164,7 +197,7 @@ void MatchingMethod( const CardInfo& pattern, CardInfo& card, int, void* )
     img.copyTo( img_display );
 
     /// Create the result matrix
-    int result_cols =  img.cols - templ.cols + 1;
+    int result_cols = img.cols - templ.cols + 1;
     int result_rows = img.rows - templ.rows + 1;
 
     result.create( result_rows, result_cols, CV_32FC1 );
@@ -179,42 +212,39 @@ void MatchingMethod( const CardInfo& pattern, CardInfo& card, int, void* )
     Point matchLoc;
 
     minMaxLoc( result, &minVal, &maxVal, &minLoc, &maxLoc, Mat() );
-    //cout << "minVal=" << minVal << endl;
-    //cout << "maxVal=" << maxVal << endl;
     double ratio = minVal / maxVal;
-    cout << "ratio=" << ratio << endl;
 
     /////////////////////////////////////////////////////
     // Logic for judging the card based on the match quality and the pattern info
 
-    // Arbitrary thresholds:
-    card.suit_ratio = 0.12;
-    card.rank_ratio = 0.12;
-
-    // if pattern is for suit, then see if its a better match than we've seen for suit.
-    if (pattern.suit > UNKNOWN_SUIT) 
+    // Arbitrary threshold to prevent false positives:
+    if (ratio < 0.10)
     {
-        if (ratio < card.suit_ratio)
+        //cout << pattern.filename << " " << ratio << endl;
+
+        // if pattern is for suit, then see if its a better match than we've seen for suit.
+        if (pattern.suit > UNKNOWN_SUIT) 
         {
-            card.suit = pattern.suit;
-            card.suit_ratio = ratio;
-            print_suit(card.suit);
-            cout << card.suit_ratio << endl;
+            if ( ratio < card.suit_ratio)
+            {
+                card.suit = pattern.suit;
+                card.suit_ratio = ratio;
+                //print_suit(card.suit);
+            }
         }
-    }
-
-    // if pattern is for rank, then see if its a better match than we've seen for rank.
-    if (pattern.rank > NONFACE)
-    {
-        if (ratio < card.rank_ratio)
+    
+        // if pattern is for rank, then see if its a better match than we've seen for rank.
+        if (pattern.rank > NONFACE)
         {
-            card.rank = pattern.rank;
-            card.rank_ratio = ratio;
-            print_rank(card.rank);
-            cout << card.rank_ratio << endl;
+            if ( ratio < card.rank_ratio)
+            {
+                card.rank = pattern.rank;
+                card.rank_ratio = ratio;
+                // print_rank(card.rank);
+            }
         }
     }
 
     return;
-} // MatchingMethod()
+}   // MatchingMethod()
 

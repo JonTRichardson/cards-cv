@@ -1,4 +1,4 @@
-#define JUTILS_CPP_VERSION   "ver 0.1+"
+#define JUTILS_CPP_VERSION   "ver 1+"
 
 #include <iostream>
 #include "opencv2/imgproc/imgproc.hpp"
@@ -9,7 +9,7 @@ using std::endl;
 
 void j_print_matchMethod(const int method)
 {
-    cout <<JUTILS_CPP_VERSION << endl;
+    //cout <<JUTILS_CPP_VERSION << endl;
 
     switch (method)
     {
