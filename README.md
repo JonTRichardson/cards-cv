@@ -19,5 +19,5 @@ KNOWN PROBLEMS
    much time to get CMake to work, so to save time, I created my own Makefile.
  - There are compiler warnings.
  - There may be license issues, e.g. a conflict between this project and
-   the openCV distribution. (I'm using MIT.  They are using 3-BSD.)
+   the openCV distribution. (I'm using GPL.  They are using 3-BSD.)
 
